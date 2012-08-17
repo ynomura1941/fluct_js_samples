@@ -1,0 +1,30 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>JSON 配信 API サンプル</title>
+<script type="text/javascript" charset="utf-8" src="sample_fluct_api_client.js"></script>
+<script type="text/javascript" charset="utf-8">
+var fac = new SampleFluctApiClient('_blank');
+
+function callback(data){
+  fac.setFluctData(data);
+};
+</script>
+<script type="text/javascript" charset="utf-8" src="http://y-nomura.sh.adingo.jp.dev.fluct.me/api/json/v1/?G=0000001000002199&cb=callback"></script>
+</head>
+
+<body>
+<script type="text/javascript" charset="utf-8">
+fac.renderCommon();
+</script>
+
+<h1>JSON 配信 API サンプル</h1>
+<input type="button" name="btnReload" value="リロード" onclick="javascript:location.reload();"/>
+<div id="test">
+<script type="text/javascript" charset="utf-8">
+fac.renderAd(1000001785);
+</script>
+</div>
+</body>
+</html>
