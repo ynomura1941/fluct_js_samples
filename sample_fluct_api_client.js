@@ -39,6 +39,9 @@ SampleFluctApiClient.prototype = {
       }
     },
     renderAd: function(unit_id){
+      if( this.fd == null ){
+        return;
+      }
       for(var i =0 ; i < this.fd.ads.length; i++){
         var ad = this.fd.ads[i];
         if(ad.unit_id == unit_id){
