@@ -88,7 +88,7 @@ $(function(){
     if(age !== ''){
       param.age = age;
     }
-    $.getJSON('http://y-nomura.sh.adingo.jp.dev.fluct.me/api/json/v1/', param, function(data){
+    $.getJSON('http://sh.adingo.jp.pre.fluct.jp/api/json/v1/', param, function(data){
       if( data.status !== 'success'){
         $('#result').html('エラーが発生したようです。');
       }
@@ -102,9 +102,19 @@ $(function(){
     $('#result').html('');
     var target = $("[name='in_target']:checked").val();
     
+    if( json.sync !== '' ){
+      var sync = $('<img style="position:absolute;border:none;padding:0;margin:0;">');
+      sync.attr({src: json.sync});
+      sync.height = 1;
+      sync.width  = 1;
+      sync.appendTo('#result');
+    }
+    
     $.each(json.ads, function(idx, val){
       var beacon = $('<img style="position:absolute;border:none;padding:0;margin:0;">');
       beacon.attr({src: val.beacon});
+      beacon.height = 1;
+      beacon.width  = 1;
       beacon.appendTo('#result');
 
       var div = $('<div>');
@@ -135,9 +145,8 @@ $(function(){
           });
       }
       else if(val.creative_type === 'html'){
-        var frame = $('<iframe style="border:none;padding:0;margin:0;" allowtransparency="false" hspace="0" vspace="0" frameborder="0" scrolling="no">');
-        frame.height = val.height;
-        frame.width  = val.width;
+        var frame = $('<iframe style="border:none;padding:0;margin:0;" marginwidth="0" marginheight="0" allowtransparency="false" hspace="0" vspace="0" frameborder="0" scrolling="no">');
+        frame.attr({width: val.width, height: val.height});
         div.html(frame);
         setTimeout( function() {
           var doc = frame[0].contentWindow.document.write(val.html);
@@ -160,9 +169,9 @@ $(function(){
 <label for="in_ua">USER AGENT:</label><select id="in_ua"></select><br/>
 <label for="in_ref">REFERRER:</label><input id="in_ref" type="text" name="ref" value=""/><br/>
 <label for="in_ip">IP ADDRESS:</label><input id="in_ip" type="text" name="ip" value=""/><br/>
-<label for="in_gen_1">男:</label><input id="in_gen_1" name="in_gen" type="radio" value="1"/>
-<label for="in_gen_1">女:</label><input id="in_gen_2" name="in_gen" type="radio" value="2"/><br/>
-<label for="in_age">USER AGENT:</label><select id="in_age"></select><br/>
+<label for="in_gen_1">男:</label><input id="in_gen_1" name="in_gen" type="radio" value="0"/>
+<label for="in_gen_1">女:</label><input id="in_gen_2" name="in_gen" type="radio" value="1"/><br/>
+<label for="in_age">年齢:</label><select id="in_age"></select><br/>
 </div>
 <div>
 <h2>遷移先表示ウィンドウ</h2>
