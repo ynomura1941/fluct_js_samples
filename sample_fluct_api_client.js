@@ -147,7 +147,7 @@ function json_str_decode(str){
     if( arrs == null ){
       return '';
     }
-    for(i=0;i<arrs.length;i++){
+    for(var i=0;i<arrs.length;i++){
         t+=String.fromCharCode(arrs[i].replace("\\u","0x"));
     }
     return(t);
