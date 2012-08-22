@@ -29,7 +29,7 @@ SampleFluctApiClient.prototype = {
       this.getBody().appendChild(beacon);
     },
     renderCommon: function(){
-      if( this.fd.sync != ''){
+      if( this.fd != null && this.fd.sync != ''){
         var sync = this.createImage();
         sync.setAttribute('src',this.fd.sync);
         sync.setAttribute('style', "display:none;position:absolute;border:none;padding:0;margin:0;");
