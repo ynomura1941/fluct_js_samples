@@ -88,6 +88,28 @@ $(function(){
     if(age !== ''){
       param.age = age;
     }
+    
+    $.ajax({
+      type: 'get',
+      url: 'http://sh.adingo.jp.pre.fluct.jp/api/json/v1/',
+      data: param,
+      dataType: 'jsonp',
+      cache: false,
+      jsonp: 'cb',
+      success: function(json){
+      if( json.status !== 'success'){
+        $('#result').html('エラーが発生したようです。');
+      }
+      else{
+        render(json);
+      }
+      },
+      error: function(){
+        $('#result').html('エラーが発生したようです。');
+      }
+    
+    });
+/*    
     $.getJSON('http://sh.adingo.jp.pre.fluct.jp/api/json/v1/', param, function(data){
       if( data.status !== 'success'){
         $('#result').html('エラーが発生したようです。');
@@ -96,8 +118,9 @@ $(function(){
         render(data);
       }
     });
+*/  
   });
-  
+
   function render(json){
     $('#result').html('');
     var target = $("[name='in_target']:checked").val();
@@ -129,7 +152,8 @@ $(function(){
         img.attr({
           src: val.creative_url,
           width: val.width,
-          height: val.height
+          height: val.height,
+          alt: json_str_decode(val.alt)
         });
         img.appendTo(link);
         link.attr({
@@ -141,7 +165,7 @@ $(function(){
       else if(val.creative_type === 'flash'){
         flashembed(String(val.unit_id), val.creative_url, {
           targetTAG: target,
-          clickTAG: val.landing_url,
+          clickTAG: val.landing_url
           });
       }
       else if(val.creative_type === 'html'){
@@ -158,6 +182,42 @@ $(function(){
     });
   }
 });
+
+function fpCheck(){
+  var userAgent = window.navigator.userAgent.toLowerCase();
+  if (userAgent.indexOf('msie') != -1) {
+    try{
+      if( typeof new ActiveXObject('ShockwaveFlash.ShockwaveFlash') !== 'undefined' ){
+        alert(new ActiveXObject('ShockwaveFlash.ShockwaveFlash').FlashVersion().toString());
+      }
+    }
+    catch(e){
+      alert('none');
+    
+    }
+    
+  }
+  else{
+    if( typeof navigator.plugins["Shockwave Flash"] !== 'undefined' ){
+      alert( navigator.plugins["Shockwave Flash"].description.charAt(16) );
+    }
+    else{
+      alert('none');
+    }
+  }
+  return false;
+};
+function json_str_decode(str){
+    arrs=str.match(/\\u.{4}/g);
+    var t="";
+    if( arrs == null ){
+      return '';
+    }
+    for(i=0;i<arrs.length;i++){
+        t+=String.fromCharCode(arrs[i].replace("\\u","0x"));
+    }
+    return(t);
+}
 </script>
 </head>
 <body>
@@ -178,6 +238,8 @@ $(function(){
 <label for="in_target_1">同じ:</label><input id="in_target_1" name="in_target" type="radio" value="_top" />
 <label for="in_target_2">無名新規ウィンドウ:</label><input id="in_target_2" name="in_target" type="radio" value="_blank"checked="checked"/>
 </div>
+
+<a href="javascript:void(0);" onclick="fpCheck();">flash version check</a>
 <div id="button_area">
 <input id="btn_getAd" type="button" name="getAd" value="取得"/>
 </div>
