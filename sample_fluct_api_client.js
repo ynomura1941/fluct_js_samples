@@ -31,7 +31,7 @@ SampleFluctApiClient.prototype = {
     renderCommon: function(){
       if( this.fd.sync != ''){
         var sync = this.createImage();
-        sync.setAttribute('src',url);
+        sync.setAttribute('src',this.fd.sync);
         sync.setAttribute('style', "display:none;position:absolute;border:none;padding:0;margin:0;");
         sync.setAttribute('width',1);
         sync.setAttribute('height',1);

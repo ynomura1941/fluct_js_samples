@@ -44,13 +44,25 @@ $(function(){
 'Mozilla/5.0 (Linux; U; Android 3.2; ja-jp; A01SH Build/HTJ85B) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Safari/533.1',
 'Mozilla/5.0 (Linux; U; Android 3.2.1; ja-jp; Transformer TF101 Build/HTK75) AppleWebKit/534.13 (KHTML, like Gecko) Version/4.0 Safari/534.13'
                  ];
-  
+  var url_list = [
+                  'http://sh.adingo.jp/api/json/v1/',
+                  'http://sh.adingo.jp.pre.fluct.jp/api/json/v1/',
+                  'http://sh.adingo.jp.dev.fluct.me/api/json/v1/',
+                  'http://y-nomura.sh.adingo.jp.dev.fluct.me/api/json/v1/'
+                  ];
+
   $.each(ua_list, function(idx, val){
     var opt = $('<option>');
     opt.attr({value: val});
     opt.html(val);
     opt.appendTo($('#in_ua'));
     
+  });
+  $.each(url_list, function(idx, val){
+    var opt = $('<option>');
+    opt.attr({value: val});
+    opt.html(val);
+    opt.appendTo($('#in_url'));
   });
   
   for(var i = 1; i <= 100; i++){
@@ -61,6 +73,7 @@ $(function(){
   }
   
   $(document).delegate('#btn_getAd', 'click', function(){
+    var url = $('#in_url option:selected').val();
     var gid = $('#in_gid').val();
     var seg = $('#in_seg').val();
     var ua  = $('#in_ua option:selected').val();
@@ -88,10 +101,9 @@ $(function(){
     if(age !== ''){
       param.age = age;
     }
-    
     $.ajax({
       type: 'get',
-      url: 'http://sh.adingo.jp.pre.fluct.jp/api/json/v1/',
+      url: url,
       data: param,
       dataType: 'jsonp',
       cache: false,
@@ -109,18 +121,21 @@ $(function(){
       }
     
     });
-/*    
-    $.getJSON('http://sh.adingo.jp.pre.fluct.jp/api/json/v1/', param, function(data){
-      if( data.status !== 'success'){
+    /*
+    $.getJSON(
+      'http://sh.adingo.jp.pre.fluct.jp/api/json/v1/',
+      param,
+      function(json){
+      if( json.status !== 'success'){
         $('#result').html('エラーが発生したようです。');
       }
       else{
-        render(data);
+        render(json);
       }
-    });
-*/  
+      }
+    );
+    */
   });
-
   function render(json){
     $('#result').html('');
     var target = $("[name='in_target']:checked").val();
@@ -224,6 +239,8 @@ function json_str_decode(str){
 <div id="form_area">
 <h2>パラメータ</h2>
 <div id="input_area">
+<label for="in_gid">リクエスト先:</label><select id="in_url"></select><br/>
+<br/>
 <label for="in_gid">GROUP ID:</label><input id="in_gid" type="text" name="gid" value=""/><br/>
 <label for="in_seg">SEGMENT ID:</label><input id="in_seg" type="text" name="seg" value=""/><br/>
 <label for="in_ua">USER AGENT:</label><select id="in_ua"></select><br/>
